@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import '../services/portfolio_service.dart';
 import '../widgets/header.dart';
@@ -52,16 +53,50 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
+  /// Load portfolio from service
   Future<void> _loadPortfolio() async {
     final portfolio = await _service.loadPortfolio();
     _portfolioNotifier.value = portfolio;
   }
 
+  /// Simulate updating portfolio prices
+  Portfolio _simulatePortfolioUpdate(Portfolio portfolio) {
+    final random = Random();
+    List<Holding> updatedHoldings = portfolio.holdings.map((h) {
+      double changePercent = (random.nextDouble() * 10) - 5; // -5% to +5%
+      double newPrice = h.currentPrice * (1 + changePercent / 100);
+      return h.copyWith(
+        currentPrice: double.parse(newPrice.toStringAsFixed(2)),
+      );
+    }).toList();
+
+    return portfolio.copyWith(holdings: updatedHoldings);
+  }
+
+  /// Reload portfolio (simulate price updates)
   Future<void> _reloadPortfolio() async {
-    final portfolio = await _service.loadPortfolioFromAssets();
-    if (portfolio != null) {
-      _portfolioNotifier.value = portfolio;
-      await _service.savePortfolio(portfolio);
+    try {
+      final currentPortfolio = _portfolioNotifier.value;
+      if (currentPortfolio == null) return;
+
+      // Simulate price updates
+      final updatedPortfolio = _simulatePortfolioUpdate(currentPortfolio);
+
+      // Update ValueNotifier
+      _portfolioNotifier.value = updatedPortfolio;
+
+      // Optionally, save to local storage
+      await _service.savePortfolio(updatedPortfolio);
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Portfolio refreshed!")));
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Failed to refresh: $e")));
     }
   }
 
@@ -90,7 +125,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Header(
               toggleTheme: widget.toggleTheme,
               isDarkMode: widget.isDarkMode,
-              onPortfolioReload: _reloadPortfolio,
+              portfolio:
+                  _portfolioNotifier.value ??
+                  Portfolio(user: 'User', holdings: []),
+              onPortfolioUpdated: (updatedPortfolio) {
+                _portfolioNotifier.value = updatedPortfolio;
+              },
             ),
             Padding(
               padding: const EdgeInsets.all(16),
@@ -104,18 +144,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     );
                   }
 
-                  // Empty portfolio
                   if (portfolio.holdings.isEmpty) {
                     final screenHeight = MediaQuery.of(context).size.height;
                     return SizedBox(
-                      height:
-                          screenHeight -
-                          kToolbarHeight, // subtract header/appbar height if any
-                      child: Center(
+                      height: screenHeight - kToolbarHeight,
+                      child: const Center(
                         child: Text(
                           "No holdings found.\nAdd some investments to see data.",
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -124,14 +161,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     );
                   }
 
-                  // Non-empty portfolio
                   return isMobile
                       ? _buildMobileLayout(portfolio)
                       : _buildDesktopLayout(portfolio);
                 },
               ),
             ),
-            const AppFooter(), // natural flow, not sticky
+            const AppFooter(),
           ],
         ),
       ),

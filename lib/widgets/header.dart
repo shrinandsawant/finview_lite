@@ -1,15 +1,20 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../models/portfolio.dart';
 
 class Header extends StatefulWidget implements PreferredSizeWidget {
-  final Function toggleTheme;
   final bool isDarkMode;
-  final Future<void> Function() onPortfolioReload;
+  final Function toggleTheme;
+  final Portfolio portfolio;
+  final Function(Portfolio)
+  onPortfolioUpdated; // Callback to update parent state
 
   const Header({
     required this.toggleTheme,
     required this.isDarkMode,
-    required this.onPortfolioReload,
+    required this.portfolio,
+    required this.onPortfolioUpdated,
     super.key,
   });
 
@@ -37,10 +42,35 @@ class _HeaderState extends State<Header> {
     setState(() => userName = name);
   }
 
+  /// Simulates portfolio price updates
+  Portfolio _simulatePortfolioUpdate(Portfolio portfolio) {
+    final random = Random();
+    List<Holding> updatedHoldings = portfolio.holdings.map((h) {
+      double changePercent = (random.nextDouble() * 10) - 5; // -5% to +5%
+      double newPrice = h.currentPrice * (1 + changePercent / 100);
+      return h.copyWith(
+        currentPrice: double.parse(newPrice.toStringAsFixed(2)),
+      );
+    }).toList();
+
+    return portfolio.copyWith(holdings: updatedHoldings);
+  }
+
   Future<void> _handleRefresh() async {
     setState(() => isRefreshing = true);
+
     try {
-      await widget.onPortfolioReload();
+      // simulate network delay
+      await Future.delayed(const Duration(seconds: 1));
+
+      if (!mounted) return;
+
+      // simulate portfolio update
+      final updatedPortfolio = _simulatePortfolioUpdate(widget.portfolio);
+
+      // notify parent to update state
+      widget.onPortfolioUpdated(updatedPortfolio);
+
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
@@ -51,6 +81,7 @@ class _HeaderState extends State<Header> {
         context,
       ).showSnackBar(SnackBar(content: Text("Failed to refresh: $e")));
     }
+
     setState(() => isRefreshing = false);
   }
 
@@ -67,8 +98,8 @@ class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: const Color(0xFF8DC63F), // keep same color always
-      foregroundColor: Colors.black, // text/icons remain visible
+      backgroundColor: const Color(0xFF8DC63F),
+      foregroundColor: Colors.black,
       elevation: 2,
       title: const Text(
         'FinView Lite',

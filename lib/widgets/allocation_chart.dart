@@ -232,11 +232,16 @@ class _AssetAllocationChartState extends State<AssetAllocationChart> {
                     : 0.0;
                 final isSelected = selectedIndex == idx;
 
+                // Truncate symbol to 3 letters
+                final displaySymbol = h.symbol.length > 3
+                    ? h.symbol.substring(0, 3).toUpperCase()
+                    : h.symbol.toUpperCase();
+
                 return PieChartSectionData(
                   color:
                       Colors.primaries[idx % Colors.primaries.length].shade400,
                   value: value,
-                  title: h.symbol.toUpperCase(),
+                  title: displaySymbol,
                   radius: isSelected ? 70 : 60,
                   titleStyle: const TextStyle(
                     fontSize: 14,
