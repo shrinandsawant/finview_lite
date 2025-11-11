@@ -1,0 +1,147 @@
+{
+  "user": "Aarav Patel",
+  "portfolio_value": 350000,
+  "total_gain": 42000,
+  "holdings": [
+    {
+      "symbol": "TCS",
+      "name": "Tata Consultancy Services",
+      "units": 10,
+      "avg_cost": 3200,
+      "current_price": 3400
+    },
+    {
+      "symbol": "INFY",
+      "name": "Infosys Ltd",
+      "units": 15,
+      "avg_cost": 1400,
+      "current_price": 1500
+    },
+    {
+      "symbol": "RELI",
+      "name": "Reliance Industries",
+      "units": 8,
+      "avg_cost": 2500,
+      "current_price": 2680
+    },
+    {
+      "symbol": "HDFCB",
+      "name": "HDFC Bank",
+      "units": 12,
+      "avg_cost": 1600,
+      "current_price": 1568
+    },
+    {
+      "symbol": "ICICIB",
+      "name": "ICICI Bank",
+      "units": 15,
+      "avg_cost": 940,
+      "current_price": 1030
+    },
+    {
+      "symbol": "SBIN",
+      "name": "State Bank of India",
+      "units": 20,
+      "avg_cost": 720,
+      "current_price": 795
+    },
+    {
+      "symbol": "MARUTI",
+      "name": "Maruti Suzuki India",
+      "units": 4,
+      "avg_cost": 9600,
+      "current_price": 10520
+    },
+    {
+      "symbol": "BAJAJF",
+      "name": "Bajaj Finance",
+      "units": 3,
+      "avg_cost": 7250,
+      "current_price": 7890
+    },
+    {
+      "symbol": "HINDUNIL",
+      "name": "Hindustan Unilever",
+      "units": 10,
+      "avg_cost": 2400,
+      "current_price": 2505
+    },
+    {
+      "symbol": "ITC",
+      "name": "ITC Limited",
+      "units": 25,
+      "avg_cost": 460,
+      "current_price": 472
+    },
+    {
+      "symbol": "ASIANP",
+      "name": "Asian Paints",
+      "units": 6,
+      "avg_cost": 3150,
+      "current_price": 3270
+    },
+    {
+      "symbol": "ONGC",
+      "name": "Oil and Natural Gas Corp",
+      "units": 30,
+      "avg_cost": 180,
+      "current_price": 195
+    },
+    {
+      "symbol": "COALIN",
+      "name": "Coal India Ltd",
+      "units": 25,
+      "avg_cost": 230,
+      "current_price": 245
+    },
+    {
+      "symbol": "SUNPHARMA",
+      "name": "Sun Pharmaceutical",
+      "units": 10,
+      "avg_cost": 1120,
+      "current_price": 1185
+    },
+    {
+      "symbol": "ADANIG",
+      "name": "Adani Green Energy",
+      "units": 15,
+      "avg_cost": 980,
+      "current_price": 910
+    },
+    {
+      "symbol": "LT",
+      "name": "Larsen & Toubro",
+      "units": 6,
+      "avg_cost": 3400,
+      "current_price": 3625
+    },
+    {
+      "symbol": "ULTRACEM",
+      "name": "UltraTech Cement",
+      "units": 3,
+      "avg_cost": 8750,
+      "current_price": 9020
+    },
+    {
+      "symbol": "AXISB",
+      "name": "Axis Bank",
+      "units": 10,
+      "avg_cost": 1020,
+      "current_price": 1095
+    },
+    {
+      "symbol": "DMART",
+      "name": "Avenue Supermarts (Dmart)",
+      "units": 4,
+      "avg_cost": 4100,
+      "current_price": 4265
+    },
+    {
+      "symbol": "POWERG",
+      "name": "Power Grid Corp",
+      "units": 20,
+      "avg_cost": 245,
+      "current_price": 256
+    }
+  ]
+}
